@@ -30,22 +30,22 @@ class Player():
 
 
         key = py.key.get_pressed()
+        if key[py.K_SPACE] and self.jumped == False:
+            self.y_velocity = -17
+            self.jumped = True
+        if key[py.K_SPACE] == True:
+            self.jumped = True
+
+        
         if key[py.K_a]:
             delta_x -= self.speed
             
         if key[py.K_d]:
             delta_x += self.speed
         
-        #Jumping
-        if key[py.K_SPACE] and self.jumped == False:
-            self.y_velocity = -17
-            self.jumped = True
-        if key[py.K_SPACE] == False:
-            self.jumped = False
-        
-
         ### JUMPING
         self.y_velocity += 1
+
         if self.y_velocity > 10:
             self.y_velocity = 10
         delta_y += self.y_velocity
@@ -56,9 +56,7 @@ class Player():
             # x collision
             if tile[1].colliderect(self.rect.x + delta_x, self.rect.y, self.width, self.height):
                 delta_x = 0
-            
-            
-            
+                
             
             # y collision
             if tile[1].colliderect(self.rect.x, self.rect.y + delta_y, self.width, self.height):
@@ -69,6 +67,7 @@ class Player():
                 elif self.y_velocity >= 0:
                     delta_y = tile[1].top - self.rect.bottom
                     self.y_velocity = 0
+                    self.jumped = False
             
         self.rect.x += delta_x
         self.rect.y += delta_y
