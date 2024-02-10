@@ -67,14 +67,16 @@ sky = py.image.load('img/Sky.jpg')
 sky = py.transform.scale(sky,(screen_width,screen_height))
 
 
-class Ground():
-    def __init__(self):
-        leaves = py.image.load('img/leaves.jpg')
-        wood = py.image.load('img/wood.jpg')
-
 
 player = Player(5,100,100)
 player_sprites = py.sprite.Group()
+
+#World
+class World():
+    def __init__(self, data):
+        leaves = py.image.load('img/leaves.jpg')
+        
+
 
 run = True
 while run:
