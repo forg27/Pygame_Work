@@ -52,8 +52,14 @@ class Player():
         
 
         #level collision
-        
-
+        for tile in world.tile_list:
+            # y collision
+            if tile[1].colliderect(self.rect.x, self.rect.y + delta_y, self.width, self.height):
+                #check if below block
+                if self.y_velocity < 0:
+                    delta_y = tile[1].bottom - self.rect.top
+                if self.y_velocity >= 0:
+                    delta_y = tile[1].top - self.rect.bottom
          
         self.rect.x += delta_x
         self.rect.y += delta_y
