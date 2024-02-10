@@ -18,6 +18,8 @@ class Player():
         self.speed = speed
         self.rect.y = y
         self.rect.x = x
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
         self.y_velocity = 0
         self.jumped = False
 
@@ -46,9 +48,14 @@ class Player():
         self.y_velocity += 1
         if self.y_velocity > 10:
             self.y_velocity = 10
-        
-        
         delta_y += self.y_velocity
+        
+        for tile in World.tile_list:
+            if tile[1].colliderect(self.rect.x, self.rect.y + delta_y, self.width, self.height):
+                
+
+
+    
          
         self.rect.x += delta_x
         self.rect.y += delta_y
@@ -73,22 +80,28 @@ level.append([1 for _ in range(18)])
 player = Player(5,100,100)
 player_sprites = py.sprite.Group()
 
+#World
+tile_list = []
 wood = py.transform.scale(py.image.load('img/wood.jpg'),(100,100))
 leaves = py.transform.scale(py.image.load('img/leaves.jpg'),(100,100))
-
 tiles = ['',wood, leaves]
-#World
-def draw_world(board):
-    for q in range(len(board)):
-        for p in range(len(level[q])):
-            if board[q][p] != 0:
-                value = board[q][p]
-                if 0 <= value <= 2:
-                    screen.blit(tiles[value], (p * tile_size, q * tile_size))
 
+        
+class World():
+    def __init__(self):
+        tiles = ['',wood, leaves]
+        self.tile_list = tile_list
+    def draw_world(board):
+        for q in range(len(board)):
+            for p in range(len(level[q])):
+                if board[q][p] != 0:
+                    value = board[q][p]
+                    tile_list.append(value)
+                    if 0 <= value <= 2:
+                        screen.blit(tiles[value], (p * tile_size, q * tile_size))
+                        
 
-
-
+world = World()
 
 level_1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -102,14 +115,11 @@ level_1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
 
-
-
-
 run = True
 while run:
     #screen background
     screen.blit(sky, (0,0))
-    draw_world(level_1)
+    World.draw_world(level_1)
     player.update()
     for i in py.event.get():
         if i.type == py.QUIT:
