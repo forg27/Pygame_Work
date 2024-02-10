@@ -13,7 +13,7 @@ py.display.set_caption('Wizard Game')
 class Player():
     def __init__(self,speed,x,y):
         img = py.image.load('img/player.png')
-        self.image = py.transform.scale(img,(40,80))
+        self.image = py.transform.scale(img,(50,90))
         self.rect = self.image.get_rect()
         self.speed = speed
         self.rect.y = y
@@ -36,7 +36,7 @@ class Player():
         
         #Jumping
         if key[py.K_SPACE] and self.jumped == False:
-            self.y_velocity = -20
+            self.y_velocity = -25
             self.jumped = True
         if key[py.K_SPACE] == False:
             self.jumped = False
@@ -98,8 +98,9 @@ level_1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
 [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
+
 
 
 
