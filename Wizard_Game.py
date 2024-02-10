@@ -1,8 +1,8 @@
 import pygame as py
 py.init()
 
-screen_width = 1800
-screen_height = 900
+screen_width = 1240
+screen_height = 720
 
 screen = py.display.set_mode((screen_width,screen_height))
 
@@ -50,10 +50,6 @@ class Player():
             self.y_velocity = 10
         delta_y += self.y_velocity
         
-        for tile in World.tile_list:
-            if tile[1].colliderect(self.rect.x, self.rect.y + delta_y, self.width, self.height):
-                
-
 
     
          
@@ -68,58 +64,55 @@ class Player():
         screen.blit(self.image,(player.rect.x, player.rect.y))
 
 
-tile_size = 100
+tile_size = 60
 #background stuff
 sky = py.image.load('img/Sky.jpg')
 sky = py.transform.scale(sky,(screen_width,screen_height))
-
-level = [[0 for _ in range(18)] for _ in range(7)]
-level.append([2 for _ in range(18)])
-level.append([1 for _ in range(18)])
 
 player = Player(5,100,100)
 player_sprites = py.sprite.Group()
 
 #World
-tile_list = []
-wood = py.transform.scale(py.image.load('img/wood.jpg'),(100,100))
-leaves = py.transform.scale(py.image.load('img/leaves.jpg'),(100,100))
-tiles = ['',wood, leaves]
 
-        
+
 class World():
-    def __init__(self):
-        tiles = ['',wood, leaves]
-        self.tile_list = tile_list
-    def draw_world(board):
-        for q in range(len(board)):
-            for p in range(len(level[q])):
-                if board[q][p] != 0:
-                    value = board[q][p]
-                    tile_list.append(value)
-                    if 0 <= value <= 2:
-                        screen.blit(tiles[value], (p * tile_size, q * tile_size))
-                        
+    def __init__(self, data):
+        leaves = py.transform.scale(py.image.load('img/leaves.jpg'),(tile_size,tile_size))
+        row_count = 0
+        self.tile_list = []
+        for row in data:
+            col_count = 0
+            for tile in row:
+                if tile == 1:
+                    wood = py.transform.scale(py.image.load('img/wood.jpg'),(tile_size,tile_size))
+                    wood_rect = wood.get_rect()
+                    wood_rect.x = col_count * tile_size
+                    wood_rect.x = row_count * tile_size
+                    tile = (wood, wood_rect)
+                    self.tile_list.append(tile)
+                if tile == 2:
+                    leaves = py.transform.scale(py.image.load('img/leaves.jpg'),(tile_size,tile_size))
+                    leaves_rect = wood.get_rect()
+                    leaves_rect.x = col_count * tile_size
+                    leaves_rect.x = row_count * tile_size
+                    tile = (leaves, leaves_rect)
+                    self.tile_list.append(tile)
+                
+                col_count += 1
+            row_count += 1
+    def draw_world(self):
+        for tile in self.tile_list:
+            screen.blit(tile[0], tile[1])
 
-world = World()
-
-level_1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+level_1 = [
 ]
-
+world = World(level_1)
 
 run = True
 while run:
     #screen background
     screen.blit(sky, (0,0))
-    World.draw_world(level_1)
+    world.draw_world()
     player.update()
     for i in py.event.get():
         if i.type == py.QUIT:
