@@ -38,7 +38,7 @@ class Player():
         
         #Jumping
         if key[py.K_SPACE] and self.jumped == False:
-            self.y_velocity = -25
+            self.y_velocity = -17
             self.jumped = True
         if key[py.K_SPACE] == False:
             self.jumped = False
@@ -53,14 +53,23 @@ class Player():
 
         #level collision
         for tile in world.tile_list:
+            # x collision
+            if tile[1].colliderect(self.rect.x + delta_x, self.rect.y, self.width, self.height):
+                delta_x = 0
+            
+            
+            
+            
             # y collision
             if tile[1].colliderect(self.rect.x, self.rect.y + delta_y, self.width, self.height):
                 #check if below block
                 if self.y_velocity < 0:
                     delta_y = tile[1].bottom - self.rect.top
-                if self.y_velocity >= 0:
+                    self.y_velocity = 0
+                elif self.y_velocity >= 0:
                     delta_y = tile[1].top - self.rect.bottom
-         
+                    self.y_velocity = 0
+            
         self.rect.x += delta_x
         self.rect.y += delta_y
 
