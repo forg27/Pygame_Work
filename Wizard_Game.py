@@ -28,7 +28,6 @@ class Player():
         delta_x = 0
         delta_y = 0
 
-
         key = py.key.get_pressed()
         if key[py.K_SPACE] and self.jumped == False:
             self.y_velocity = -17
