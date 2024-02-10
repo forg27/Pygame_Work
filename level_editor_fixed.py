@@ -11,9 +11,8 @@ fps = 60
 #game window
 tile_size = 62
 cols = 120
-
-screen_width = 1240
-screen_height = 720
+screen_width = 1200
+screen_height = 900
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Level Editor')
@@ -31,7 +30,7 @@ platform_x_img = pygame.image.load('img/platform_x.png')
 platform_y_img = pygame.image.load('img/platform_y.png')
 
 save_img = pygame.image.load('img/save_btn.png')
-
+load_img = pygame.image.load('img/load_btn.png')
 
 #define game variables
 clicked = False
@@ -120,7 +119,7 @@ class Button():
 
 #create load and save buttons
 save_button = Button(screen_width // 2 - 150, screen_height - 80, save_img)
-
+load_button = Button(screen_width // 2 + 50, screen_height - 80, load_img)
 
 #main game loop
 run = True
@@ -136,9 +135,13 @@ while run:
 	#load and save level
 	if save_button.draw():
 		#save level data
-		pickle_out = open(f'level{level}_data', 'wb')
-		pickle.dump(world_data, pickle_out)
-		pickle_out.close()
+		print(world_data)
+
+	if load_button.draw():
+		#load in level data
+		if path.exists(f'level{level}_data'):
+			pickle_in = open(f'level{level}_data', 'rb')
+			world_data = pickle.load(pickle_in)
 
 
 	#show the grid and draw the level tiles
