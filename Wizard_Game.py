@@ -1,8 +1,8 @@
 import pygame as py
 py.init()
 
-screen_width = 1240
-screen_height = 720
+screen_width = 1800
+screen_height = 900
 
 screen = py.display.set_mode((screen_width,screen_height))
 
@@ -12,7 +12,7 @@ py.display.set_caption('Wizard Game')
 
 class Player():
     def __init__(self,speed,x,y):
-        img = py.image.load('player.png')
+        img = py.image.load('img/player.png')
         self.image = py.transform.scale(img,(40,80))
         self.rect = self.image.get_rect()
         self.speed = speed
@@ -61,27 +61,54 @@ class Player():
         screen.blit(self.image,(player.rect.x, player.rect.y))
 
 
-tile_size = 250
+tile_size = 100
 #background stuff
 sky = py.image.load('img/Sky.jpg')
 sky = py.transform.scale(sky,(screen_width,screen_height))
 
-
+level = [[0 for _ in range(18)] for _ in range(7)]
+level.append([2 for _ in range(18)])
+level.append([1 for _ in range(18)])
 
 player = Player(5,100,100)
 player_sprites = py.sprite.Group()
 
+wood = py.transform.scale(py.image.load('img/wood.jpg'),(100,100))
+leaves = py.transform.scale(py.image.load('img/leaves.jpg'),(100,100))
+
+tiles = ['',wood, leaves]
 #World
-class World():
-    def __init__(self, data):
-        leaves = py.image.load('img/leaves.jpg')
-        
+def draw_world(board):
+    for q in range(len(board)):
+        for p in range(len(level[q])):
+            if board[q][p] != 0:
+                value = board[q][p]
+                if 0 <= value <= 2:
+                    screen.blit(tiles[value], (p * tile_size, q * tile_size))
+
+
+
+
+
+level_1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
+
 
 
 run = True
 while run:
     #screen background
     screen.blit(sky, (0,0))
+    draw_world(level_1)
     player.update()
     for i in py.event.get():
         if i.type == py.QUIT:

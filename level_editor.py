@@ -5,7 +5,7 @@ py.init()
 # tutorial souce https://www.youtube.com/watch?v=7w8FiHe4ziQ
 screen_width = 1240
 screen_height = 720
-tile_size = 90
+tile_size = 100
 screen = py.display.set_mode((screen_width,screen_height))
 
 clock = py.time.Clock()
@@ -70,7 +70,7 @@ while run:
             if event.key == py.K_RETURN:
                 board_string = "["
                 for i in range(len(level)):
-                    board_string += str(level[i]+ '\n')
+                    board_string += f"{level[i]}\n"
                 board_string += "]"
                 print(board_string)
     py.display.flip()
