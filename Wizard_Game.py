@@ -74,6 +74,7 @@ class Player():
         #temp check
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
+            self.jumped = False
             delta_y = 0
 
         screen.blit(self.image,(player.rect.x, player.rect.y))
